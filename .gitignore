@@ -1,0 +1,19 @@
+# Visual Studio generated binary files
+bin/
+
+# Visual Studio generated output folder
+obj/
+
+# Visual Studio user-specific files
+.vscode/
+.vs/
+
+# NuGet package folder
+packages/
+
+# IDE generated temporary files
+*.suo
+*.user
+*.suo
+*.user
+*.sln.docstates
