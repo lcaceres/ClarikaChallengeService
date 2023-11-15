@@ -53,7 +53,7 @@ namespace ClarikaChallengeService.Test
         [TestCase(-1)] 
         public void GetById_InvalidProvinceId_ThrowsValidationException(int invalidProvinceId)
         {
-            Assert.Throws<BusinessRuleValidationException>(() => provinceService.GetById(invalidProvinceId));
+            Assert.Throws<ApplicationArgumentException>(() => provinceService.GetById(invalidProvinceId));
         }
 
         [Test]

@@ -51,7 +51,7 @@ namespace ClarikaChallengeService.Test
         [TestCase(-1)]
         public void GetById_InvalidCountryId_ThrowsValidationException(int invalidCountryId)
         {
-            Assert.Throws<BusinessRuleValidationException>(() => countryService.GetById(invalidCountryId));
+            Assert.Throws<ApplicationArgumentException>(() => countryService.GetById(invalidCountryId));
         }
 
         [Test]

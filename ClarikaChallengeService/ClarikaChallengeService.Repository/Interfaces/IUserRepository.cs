@@ -6,7 +6,8 @@ namespace ClarikaChallengeService.Repository.Interfaces
     {
         void Add(User user);
         User GetById(int userId);
-        List<User> GetAll();
+        List<User> GetWithFilters(int page, int pageSize, int? age, int? countryId);
         User GetByUserName(string userName);
+        void GenerateRandomUsers(int rowCount, string fixedPasswordHash);
     }
 }

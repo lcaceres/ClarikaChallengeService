@@ -4,23 +4,26 @@ using ClarikaChallengeService.Infraestructure.Exceptions;
 using ClarikaChallengeService.Infraestructure.Localization;
 using ClarikaChallengeService.Repository.Interfaces;
 using ClarikaChallengeService.Repository.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace ClarikaChallengeService.Application.Services
 {
     public class UserService : IUserService
     {
+        private readonly IConfiguration configuration;
         private readonly IPasswordHashService passwordHashService;
         private readonly IUserRepository userRepository;
         private readonly ICountryRepository countryRepository;
         private readonly IProvinceRepository provinceRepository;
         private readonly ICityRepository cityRepository;
 
-        public UserService(IPasswordHashService passwordHashService, 
+        public UserService(IConfiguration configuration, IPasswordHashService passwordHashService, 
             IUserRepository userRepository, 
             ICountryRepository countryRepository, 
             IProvinceRepository provinceRepository, 
             ICityRepository cityRepository)
         {
+            this.configuration= configuration;
             this.passwordHashService = passwordHashService;
             this.userRepository = userRepository;
             this.countryRepository = countryRepository;
@@ -124,20 +127,7 @@ namespace ClarikaChallengeService.Application.Services
 
         public List<UserDto> GetAll(int page, int pageSize, int? age, int? countryId)
         {
-            var query = userRepository.GetAll().AsQueryable();
-
-            if (age.HasValue)
-            {
-                query = query.Where(u => u.Age == age.Value);
-            }
-
-            if (countryId.HasValue)
-            {
-                query = query.Where(u => u.CountryID == countryId.Value);
-            }
-
-            var pagedResults = query.Skip((page - 1) * pageSize).Take(pageSize).ToList();
-
+            var pagedResults = userRepository.GetWithFilters(page, pageSize, age,  countryId);
             var countries = countryRepository.GetAll();
             var cities= cityRepository.GetAll(null);
             var provinces = provinceRepository.GetAll(null);
@@ -180,12 +170,12 @@ namespace ClarikaChallengeService.Application.Services
 
             if (string.IsNullOrEmpty(userName))
             {
-                throw new BusinessRuleValidationException(SystemMessages.UsernameNotEmpty);
+                throw new ApplicationArgumentException(SystemMessages.UsernameNotEmpty);
             }
 
             if (string.IsNullOrEmpty(password))
             {
-                throw new BusinessRuleValidationException(SystemMessages.PasswordNotEmpty);
+                throw new ApplicationArgumentException(SystemMessages.PasswordNotEmpty);
             }
 
             if (user == null)
@@ -244,31 +234,8 @@ namespace ClarikaChallengeService.Application.Services
 
         public void GenerateRandomUsers(int count)
         {
-            for (int i = 0; i < count; i++)
-            {
-                UserDto randomUser = GenerateRandomUser();
-                Add(randomUser, "randomPassword");
-            }
+            var password = configuration["RandomPassword"];
+            userRepository.GenerateRandomUsers(count, passwordHashService.HashPassword(password));
         }
-
-        private UserDto GenerateRandomUser()
-        {
-            Random random = new Random();
-
-            UserDto randomUser = new UserDto
-            {
-                UserName = "User" + random.Next(10000),
-                FirstName = "FirstName" + random.Next(10000),
-                LastName = "LastName" + random.Next(10000),
-                Age = random.Next(18, 60), 
-                BirthDate = DateTime.Now.AddYears(-random.Next(18, 60)),
-                CountryID = 1,
-                ProvinceID = 1, 
-                CityID = 1 
-            };
-
-            return randomUser;
-        }
-
     }
 }

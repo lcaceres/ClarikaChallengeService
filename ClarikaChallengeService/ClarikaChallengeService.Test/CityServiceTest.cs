@@ -57,7 +57,7 @@ namespace ClarikaChallengeService.Test
         public void GetById_InvalidCityId_ThrowsValidationException(int invalidCityId)
         {
             // Act & Assert
-            Assert.Throws<BusinessRuleValidationException>(() => cityService.GetById(invalidCityId));
+            Assert.Throws<ApplicationArgumentException>(() => cityService.GetById(invalidCityId));
         }
 
         [Test]

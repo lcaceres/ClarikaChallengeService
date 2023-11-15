@@ -2,9 +2,7 @@
 using ClarikaChallengeService.Application.Models;
 using ClarikaChallengeService.Infraestructure.Exceptions;
 using ClarikaChallengeService.Infraestructure.Localization;
-using ClarikaChallengeService.Repository.DAL;
 using ClarikaChallengeService.Repository.Interfaces;
-using ClarikaChallengeService.Repository.Models;
 
 namespace ClarikaChallengeService.Application.Services
 {
@@ -21,7 +19,7 @@ namespace ClarikaChallengeService.Application.Services
         {
             if (countryId <= 0)
             {
-                throw new BusinessRuleValidationException(SystemMessages.CountryIDNotNegative);
+                throw new ApplicationArgumentException(SystemMessages.CountryIDNotNegative);
             }
 
             var country = countryRepository.GetById(countryId);

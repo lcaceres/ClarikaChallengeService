@@ -3,7 +3,6 @@ using ClarikaChallengeService.Application.Models;
 using ClarikaChallengeService.Infraestructure.Exceptions;
 using ClarikaChallengeService.Infraestructure.Localization;
 using ClarikaChallengeService.Repository.Interfaces;
-using ClarikaChallengeService.Repository.Models;
 
 namespace ClarikaChallengeService.Application.Services
 {
@@ -21,7 +20,7 @@ namespace ClarikaChallengeService.Application.Services
 
             if (cityId <= 0)
             {
-                throw new BusinessRuleValidationException(SystemMessages.CityIDNotNegative);
+                throw new ApplicationArgumentException(SystemMessages.CityIDNotNegative);
             }
 
             var city = cityRepository.GetById(cityId);

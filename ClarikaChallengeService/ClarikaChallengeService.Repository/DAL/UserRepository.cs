@@ -83,7 +83,7 @@ namespace ClarikaChallengeService.Repository.DAL
             return null;
         }
 
-        public List<User> GetAll()
+        public List<User> GetWithFilters(int page, int pageSize, int? age, int? countryId)
         {
             List<User> users = new List<User>();
 
@@ -94,7 +94,12 @@ namespace ClarikaChallengeService.Repository.DAL
                 using (IDbCommand command = connection.CreateCommand())
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.CommandText = "sp_users_getAll";
+                    command.CommandText = "sp_users_getWithFilters";
+
+                    command.Parameters.Add(CreateParameter("@Page", page));
+                    command.Parameters.Add(CreateParameter("@PageSize", pageSize));
+                    command.Parameters.Add(CreateParameter("@Age", age));
+                    command.Parameters.Add(CreateParameter("@CountryId", countryId));
 
                     using (IDataReader reader = command.ExecuteReader())
                     {
@@ -121,7 +126,6 @@ namespace ClarikaChallengeService.Repository.DAL
 
             return users;
         }
-
 
         public User GetByUserName(string userName)
         {
@@ -164,6 +168,43 @@ namespace ClarikaChallengeService.Repository.DAL
             }
 
             return null;
+        }
+
+
+        public void GenerateRandomUsers(int rowCount, string fixedPasswordHash)
+        {
+            using (IDbConnection connection = dbConnectionFactory.CreateConnection())
+            {
+                connection.Open();
+
+                using (IDbCommand command = connection.CreateCommand())
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandText = "sp_randomUsers";
+
+                    IDbDataParameter rowCountParameter = command.CreateParameter();
+                    rowCountParameter.ParameterName = "@RowCount";
+                    rowCountParameter.Value = rowCount;
+                    command.Parameters.Add(rowCountParameter);
+
+                    IDbDataParameter fixedPasswordHashParameter = command.CreateParameter();
+                    fixedPasswordHashParameter.ParameterName = "@FixedPasswordHash";
+                    fixedPasswordHashParameter.Value = fixedPasswordHash;
+                    command.Parameters.Add(fixedPasswordHashParameter);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        private SqlParameter CreateParameter(string name, object value)
+        {
+            return new SqlParameter
+            {
+                ParameterName = name,
+                Value = (value == null) ? DBNull.Value : value
+            };
+
         }
     }
 }

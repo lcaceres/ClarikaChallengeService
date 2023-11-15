@@ -4,6 +4,7 @@ using ClarikaChallengeService.Application.Services;
 using ClarikaChallengeService.Infraestructure.Exceptions;
 using ClarikaChallengeService.Repository.Interfaces;
 using ClarikaChallengeService.Repository.Models;
+using Microsoft.Extensions.Configuration;
 using Moq;
 
 namespace ClarikaChallengeService.Test
@@ -11,6 +12,7 @@ namespace ClarikaChallengeService.Test
     [TestFixture]
     public class UserServiceTest
     {
+        private Mock<IConfiguration> configurationMock;
         private Mock<IUserRepository> userRepositoryMock;
         private Mock<ICountryRepository> countryRepositoryMock;
         private Mock<IProvinceRepository> provinceRepositoryMock;
@@ -22,6 +24,7 @@ namespace ClarikaChallengeService.Test
         [SetUp]
         public void Setup()
         {
+            configurationMock = new Mock<IConfiguration>();
             userRepositoryMock = new Mock<IUserRepository>();
             countryRepositoryMock = new Mock<ICountryRepository>();
             provinceRepositoryMock = new Mock<IProvinceRepository>();
@@ -29,6 +32,7 @@ namespace ClarikaChallengeService.Test
             passwordHashServiceMock = new Mock<IPasswordHashService>();
 
             userService = new UserService(
+                configurationMock.Object,
                 passwordHashServiceMock.Object,
                 userRepositoryMock.Object,
                 countryRepositoryMock.Object,
@@ -60,10 +64,8 @@ namespace ClarikaChallengeService.Test
 
             passwordHashServiceMock.Setup(service => service.HashPassword(It.IsAny<string>())).Returns("hashedPassword");
 
-            // Act
             var result = userService.Add(userDto, "password");
 
-            // Assert
             userRepositoryMock.Verify(repo => repo.Add(It.IsAny<User>()), Times.Once);
             Assert.AreEqual(userDto, result);
         }
@@ -103,7 +105,6 @@ namespace ClarikaChallengeService.Test
         [Test]
         public void ValidateLogin_ValidCredentials_ReturnsUserDto()
         {
-            // Arrange
             var userName = "validUser";
             var password = "validPassword";
             userRepositoryMock.Setup(repo => repo.GetByUserName(userName)).Returns(new User
@@ -123,10 +124,8 @@ namespace ClarikaChallengeService.Test
             provinceRepositoryMock.Setup(repo => repo.GetById(It.IsAny<int>())).Returns((Province)null);
             cityRepositoryMock.Setup(repo => repo.GetById(It.IsAny<int>())).Returns((City)null);
 
-            // Act
             var result = userService.ValidateLogin(userName, password);
 
-            // Assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<UserDto>(result);
         }
@@ -140,8 +139,7 @@ namespace ClarikaChallengeService.Test
         [TestCase(null, null)]
         public void ValidateLogin_InvalidUserName_ThrowsException(string userName, string password)
         {
-            // Act & Assert
-            Assert.Throws<BusinessRuleValidationException>(() => userService.ValidateLogin(userName, password));
+            Assert.Throws<ApplicationArgumentException>(() => userService.ValidateLogin(userName, password));
         }
     }
 }

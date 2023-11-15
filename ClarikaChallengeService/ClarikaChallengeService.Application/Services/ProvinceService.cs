@@ -20,7 +20,7 @@ namespace ClarikaChallengeService.Application.Services
         {
             if (provinceId <= 0)
             {
-                throw new BusinessRuleValidationException(SystemMessages.ProvinceIDNotNegative);
+                throw new ApplicationArgumentException(SystemMessages.ProvinceIDNotNegative);
             }
 
             var province = provinceRepository.GetById(provinceId);
