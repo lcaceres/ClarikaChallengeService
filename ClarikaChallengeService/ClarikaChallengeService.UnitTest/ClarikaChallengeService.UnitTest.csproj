@@ -7,11 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BCrypt.Net" Version="0.1.0" />
+    <PackageReference Include="Moq" Version="4.20.69" />
+    <PackageReference Include="NUnit" Version="3.14.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ClarikaChallengeService.Infraestructure\ClarikaChallengeService.Infraestructure.csproj" />
+    <ProjectReference Include="..\ClarikaChallengeService.Application\ClarikaChallengeService.Application.csproj" />
     <ProjectReference Include="..\ClarikaChallengeService.Repository\ClarikaChallengeService.Repository.csproj" />
   </ItemGroup>
 

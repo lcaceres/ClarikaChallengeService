@@ -59,5 +59,95 @@ namespace ClarikaChallengeService.Infraestructure.Localization {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The city id should be a positive number.
+        /// </summary>
+        public static string CityIDNotNegative {
+            get {
+                return ResourceManager.GetString("CityIDNotNegative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The city is not found.
+        /// </summary>
+        public static string CityNotFound {
+            get {
+                return ResourceManager.GetString("CityNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The country id shoud be a positive number.
+        /// </summary>
+        public static string CountryIDNotNegative {
+            get {
+                return ResourceManager.GetString("CountryIDNotNegative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The country is not found.
+        /// </summary>
+        public static string CountryNotFound {
+            get {
+                return ResourceManager.GetString("CountryNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The password is empty.
+        /// </summary>
+        public static string PasswordNotEmpty {
+            get {
+                return ResourceManager.GetString("PasswordNotEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The province id shoud be a positive number.
+        /// </summary>
+        public static string ProvinceIDNotNegative {
+            get {
+                return ResourceManager.GetString("ProvinceIDNotNegative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The province is not found.
+        /// </summary>
+        public static string ProvinceNotFound {
+            get {
+                return ResourceManager.GetString("ProvinceNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The user id should be a positive number.
+        /// </summary>
+        public static string UserIDNotNegative {
+            get {
+                return ResourceManager.GetString("UserIDNotNegative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The username is empty.
+        /// </summary>
+        public static string UsernameNotEmpty {
+            get {
+                return ResourceManager.GetString("UsernameNotEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a The user is not found.
+        /// </summary>
+        public static string UserNotFound {
+            get {
+                return ResourceManager.GetString("UserNotFound", resourceCulture);
+            }
+        }
     }
 }

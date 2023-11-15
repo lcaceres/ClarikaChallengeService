@@ -15,15 +15,15 @@ namespace ClarikaChallengeService.WebApi.Infraestructure.Middleware
             _next = next;
         }
 
-        public void Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context)
         {
             try
             {
-                _next(context);
+                await _next(context);
             }
             catch (Exception ex)
             {
-                HandleExceptionAsync(context, ex);
+                await HandleExceptionAsync(context, ex);
             }
         }
 
